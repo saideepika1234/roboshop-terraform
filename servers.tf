@@ -1,5 +1,17 @@
+data "aws_ami" "centos"{
+    owners           =["973714476881"]
+    most_recent      = true
+    name_regex       = "Centos-8-DevOps-Practice"
+}
+
+output "ami"{
+    value = data.aws_ami.centos.image_id
+}
+
+# data.aws_ami.centos.image_id = ami-03265a0778a880afb. So replacing value code
+
 resource "aws_instance" "frontend" {
-  ami           = "ami-03265a0778a880afb"
+  ami           = data.aws_ami.centos.image_id
   instance_type = "t3.micro"
 
   tags = {
@@ -7,12 +19,16 @@ resource "aws_instance" "frontend" {
   }
 }
 
-output "frontend" {
-    value = aws_instance.frontend.public_ip
+resource "aws_route53_record" "frontend" {
+  zone_id = "Z015993126HOUOW03F71T"
+  name    = "frontend-dev-rsaideepika123.online"
+  type    = "A"
+  ttl     = 30
+  records = [aws_instance.frontend.private_ip]
 }
 
 resource "aws_instance" "cart" {
-  ami           = "ami-03265a0778a880afb"
+  ami           = data.aws_ami.centos.image_id
   instance_type = "t3.micro"
 
   tags = {
@@ -20,8 +36,16 @@ resource "aws_instance" "cart" {
   }
 }
 
+resource "aws_route53_record" "cart" {
+  zone_id = "Z015993126HOUOW03F71T"
+  name    = "cart-dev-rsaideepika123.online"
+  type    = "A"
+  ttl     = 30
+  records = [aws_instance.cart.private_ip]
+}
+
 resource "aws_instance" "catalogue" {
-  ami           = "ami-03265a0778a880afb"
+  ami           = data.aws_ami.centos.image_id
   instance_type = "t3.micro"
 
   tags = {
@@ -29,8 +53,16 @@ resource "aws_instance" "catalogue" {
   }
 }
 
+resource "aws_route53_record" "catalogue" {
+  zone_id = "Z015993126HOUOW03F71T"
+  name    = "catalogue-dev-rsaideepika123.online"
+  type    = "A"
+  ttl     = 30
+  records = [aws_instance.catalogue.private_ip]
+}
+
 resource "aws_instance" "dispatach" {
-  ami           = "ami-03265a0778a880afb"
+  ami           = data.aws_ami.centos.image_id
   instance_type = "t3.micro"
 
   tags = {
@@ -38,26 +70,50 @@ resource "aws_instance" "dispatach" {
   }
 }
 
-resource "aws_instance" "mongo" {
-  ami           = "ami-03265a0778a880afb"
+resource "aws_route53_record" "dispatach" {
+  zone_id = "Z015993126HOUOW03F71T"
+  name    = "dispatach-dev-rsaideepika123.online"
+  type    = "A"
+  ttl     = 30
+  records = [aws_instance.dispatach.private_ip]
+}
+
+resource "aws_instance" "mongodb" {
+  ami           = data.aws_ami.centos.image_id
   instance_type = "t3.micro"
 
   tags = {
-    Name = "mongo"
+    Name = "mongodb"
   }
 }
 
-resource "aws_instance" "mqsql" {
-  ami           = "ami-03265a0778a880afb"
+resource "aws_route53_record" "mongodb" {
+  zone_id = "Z015993126HOUOW03F71T"
+  name    = "mongodb-dev-rsaideepika123.online"
+  type    = "A"
+  ttl     = 30
+  records = [aws_instance.mongodb.private_ip]
+}
+
+resource "aws_instance" "mysql" {
+  ami           = data.aws_ami.centos.image_id
   instance_type = "t3.micro"
 
   tags = {
-    Name = "mqsql"
+    Name = "mysql"
   }
+}
+
+resource "aws_route53_record" "mysql" {
+  zone_id = "Z015993126HOUOW03F71T"
+  name    = "mysql-dev-rsaideepika123.online"
+  type    = "A"
+  ttl     = 30
+  records = [aws_instance.mysql.private_ip]
 }
 
 resource "aws_instance" "payment" {
-  ami           = "ami-03265a0778a880afb"
+  ami           = data.aws_ami.centos.image_id
   instance_type = "t3.micro"
 
   tags = {
@@ -65,8 +121,16 @@ resource "aws_instance" "payment" {
   }
 }
 
+resource "aws_route53_record" "payment" {
+  zone_id = "Z015993126HOUOW03F71T"
+  name    = "payment-dev-rsaideepika123.online"
+  type    = "A"
+  ttl     = 30
+  records = [aws_instance.payment.private_ip]
+}
+
 resource "aws_instance" "redis" {
-  ami           = "ami-03265a0778a880afb"
+  ami           = data.aws_ami.centos.image_id
   instance_type = "t3.micro"
 
   tags = {
@@ -74,8 +138,16 @@ resource "aws_instance" "redis" {
   }
 }
 
+resource "aws_route53_record" "redis" {
+  zone_id = "Z015993126HOUOW03F71T"
+  name    = "redis-dev-rsaideepika123.online"
+  type    = "A"
+  ttl     = 30
+  records = [aws_instance.redis.private_ip]
+}
+
 resource "aws_instance" "rabbitmq" {
-  ami           = "ami-03265a0778a880afb"
+  ami           = data.aws_ami.centos.image_id
   instance_type = "t3.micro"
 
   tags = {
@@ -83,8 +155,16 @@ resource "aws_instance" "rabbitmq" {
   }
 }
 
+resource "aws_route53_record" "rabbitmq" {
+  zone_id = "Z015993126HOUOW03F71T"
+  name    = "rabbitmq-dev-rsaideepika123.online"
+  type    = "A"
+  ttl     = 30
+  records = [aws_instance.rabbitmq.private_ip]
+}
+
 resource "aws_instance" "shipping" {
-  ami           = "ami-03265a0778a880afb"
+  ami           = data.aws_ami.centos.image_id
   instance_type = "t3.micro"
 
   tags = {
@@ -92,11 +172,27 @@ resource "aws_instance" "shipping" {
   }
 }
 
+resource "aws_route53_record" "shipping" {
+  zone_id = "Z015993126HOUOW03F71T"
+  name    = "shipping-dev-rsaideepika123.online"
+  type    = "A"
+  ttl     = 30
+  records = [aws_instance.shipping.private_ip]
+}
+
 resource "aws_instance" "user" {
-  ami           = "ami-03265a0778a880afb"
+  ami           = data.aws_ami.centos.image_id
   instance_type = "t3.micro"
 
   tags = {
     Name = "user"
   }
+}
+
+resource "aws_route53_record" "user" {
+  zone_id = "Z015993126HOUOW03F71T"
+  name    = "user-dev-rsaideepika123.online"
+  type    = "A"
+  ttl     = 30
+  records = [aws_instance.user.private_ip]
 }

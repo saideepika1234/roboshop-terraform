@@ -72,7 +72,7 @@ resource "aws_route53_record" "catalogue" {
   records = [aws_instance.catalogue.private_ip]
 }
 
-resource "aws_instance" "dispatach" {
+resource "aws_instance" "dispatch" {
   ami           = data.aws_ami.centos.image_id
   instance_type = "var.instance_type"
   vpc_security_group_ids = [data.aws_security_group.allow-all.id]
@@ -83,12 +83,12 @@ resource "aws_instance" "dispatach" {
   }
 }
 
-resource "aws_route53_record" "dispatach" {
+resource "aws_route53_record" "dispatch" {
   zone_id = "Z015993126HOUOW03F71T"
-  name    = "dispatach-dev.rsaideepika123.online"
+  name    = "dispatch-dev.rsaideepika123.online"
   type    = "A"
   ttl     = 30
-  records = [aws_instance.dispatach.private_ip]
+  records = [aws_instance.dispatch.private_ip]
 }
 
 resource "aws_instance" "mongodb" {
